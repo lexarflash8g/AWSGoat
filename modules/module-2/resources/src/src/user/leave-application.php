@@ -13,7 +13,7 @@ if($_SESSION['isadmin'] == 1 || $_SESSION['isadmin'] == 2){
 }
 
 $sql = "SELECT * from users_info where id =(SELECT id from users where username = '{$_SESSION['username']}');";
-$result = mysqli_query($conn, $sql);
+$result = mysqli_prepare($conn, $sql);
 $userid = $_SESSION['id'];
 $resultname = mysqli_fetch_assoc($result);
 $firstname = $resultname['first_name'];
@@ -33,7 +33,7 @@ if (isset($_POST['submit'])) {
     if ((!empty($fname)) && (!empty($lname)) && (!empty($email)) && (!empty($address)) && (!empty($ssn))) {
         $upq = "UPDATE `users_info` SET `first_name` = '$fname', `last_name` = '$lname' , `phone` = '$phone', `email` = '$email', `address` = '$address', `ssn` = '$ssn', `bank_account` = '$bank' WHERE id = $uid;";
         $upq2 = "UPDATE `users` SET `email` = '$email' where id =$uid; ";
-        $upload1 = mysqli_query($conn, $upq);
+        $upload1 = mysqli_prepare($conn, $upq);
         $upload2 = mysqli_query($conn, $upq2);
 
         if ((!empty($npass)) && (!empty($cpass))) {
