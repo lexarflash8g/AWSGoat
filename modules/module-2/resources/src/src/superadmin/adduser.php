@@ -22,7 +22,7 @@ $bank_account = $_POST['bank_account'];
 $phone = $_POST['phone'];
 
 
-mysqli_query($conn, $query);
+mysqli_prepare($conn, $query);
 
 $query3 = "SELECT `id` FROM `users` WHERE `email`='$email';";
   
@@ -55,6 +55,6 @@ VALUES(
     '$isadmin'
 );";
 
-mysqli_query($conn, $query2);
+mysqli_prepare($conn, $query2);
 header('Location: user-settings.php');
 ?>

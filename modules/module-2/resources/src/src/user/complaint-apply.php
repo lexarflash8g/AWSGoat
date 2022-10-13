@@ -10,7 +10,7 @@ include_once '../config.inc';
         $organization_id = $_POST['organization_id'];
         $query = "INSERT INTO `complaints` ( `id`, `first_name`, `message`, `organization_id`) VALUES 
         ('$id', '$username', '$message', '$organization_id');";
-        mysqli_query($conn, $query);
+        mysqli_prepare($conn, $query);
         header('Location: ./complaints.php');
     }
 ?>

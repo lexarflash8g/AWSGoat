@@ -13,7 +13,7 @@ if($_SESSION['isadmin'] == 1 || $_SESSION['isadmin'] == 2){
 }
 
 $sql = "SELECT * from users_info where id =(SELECT id from users where username = '{$_SESSION['username']}');";
-$result = mysqli_query($conn, $sql);
+$result = mysqli_prepare($conn, $sql);
 $userid = $_SESSION['id'];
 $resultname = mysqli_fetch_assoc($result);
 $firstname = $resultname['first_name'];
@@ -33,14 +33,14 @@ if (isset($_POST['submit'])) {
     if ((!empty($fname)) && (!empty($lname)) && (!empty($email)) && (!empty($address)) && (!empty($ssn))) {
         $upq = "UPDATE `users_info` SET `first_name` = '$fname', `last_name` = '$lname' , `phone` = '$phone', `email` = '$email', `address` = '$address', `ssn` = '$ssn', `bank_account` = '$bank' WHERE id = $uid;";
         $upq2 = "UPDATE `users` SET `email` = '$email' where id =$uid; ";
-        $upload1 = mysqli_query($conn, $upq);
-        $upload2 = mysqli_query($conn, $upq2);
+        $upload1 = mysqli_prepare($conn, $upq);
+        $upload2 = mysqli_prepare($conn, $upq2);
 
         if ((!empty($npass)) && (!empty($cpass))) {
             if (($npass == $cpass)) {
                 $pass = md5($cpass);
                 $upq3 = "UPDATE `users` SET `password` = '$pass' where id =$uid; ";
-                $upload3 = mysqli_query($conn, $upq3);
+                $upload3 = mysqli_prepare($conn, $upq3);
                 header('Location: ../logout.php');
                 exit;
             }
@@ -64,7 +64,7 @@ if (isset($_POST['submit'])) {
 
     if ((!empty($leavetype)) && (!empty($fromdate))) {
         $queryleaveinsert = "INSERT INTO `leave_applications`(`first_name`, `id`,`leave_type`,`from_date`,`to_date`,`reason`) VALUES('$firstname','$userid','$leavetype','$fromdate','$todate','$inputreason')";
-        $upload4 = mysqli_query($conn, $queryleaveinsert);
+        $upload4 = mysqli_prepare($conn, $queryleaveinsert);
     } else {
 
         header('Location:leave-application.php');
@@ -93,7 +93,7 @@ if (isset($_POST['submit'])) {
 
     if ((!empty($remtype)) && (!empty($filedon)) && (!empty($amount))) {
         $queryreminsert = "INSERT INTO `reimbursments` (`id`,`first_name`,`type`,`filed_on`,`amount`) VALUES('$userid','$firstname','$remtype','$filedon','$amount')";
-        $upload5 = mysqli_query($conn, $queryreminsert);
+        $upload5 = mysqli_prepare($conn, $queryreminsert);
     } else {
 
         header('Location: reimbursment.php');
@@ -190,7 +190,7 @@ if (isset($_POST['submit'])) {
     <div class="profilewrapper">
         <?php
         $sql = "SELECT * from users_info where id =(SELECT id from users where username = '{$_SESSION['username']}');";
-        $result = mysqli_query($conn, $sql);
+        $result = mysqli_prepare($conn, $sql);
         ?>
         <div class="modal fade" id="myModal">
             <div class="modal-dialog modal-lg">
@@ -236,7 +236,7 @@ if (isset($_POST['submit'])) {
     <div class="settingswrapper">
         <?php
         $sql = "SELECT * from users_info where id =(SELECT id from users where username = '{$_SESSION['username']}');";
-        $result = mysqli_query($conn, $sql);
+        $result = mysqli_prepare($conn, $sql);
 
         ?>
         <div class="modal fade" id="settingsModal">
@@ -353,7 +353,7 @@ if (isset($_POST['submit'])) {
                                             <?php
                                             // $uid = "SELECT id from users where username = '{$_SESSION['username']}';";
                                             $querycom = "select complaint_id, message, remark from `complaints` where first_name = '{$_SESSION['username']}' LIMIT 7;";
-                                            $comresult = mysqli_query($conn, $querycom);
+                                            $comresult = mysqli_prepare($conn, $querycom);
 
                                             if (!$comresult) {
                                                 die("Invalid Query: ");
@@ -387,7 +387,7 @@ if (isset($_POST['submit'])) {
                                             <div>
                                                 <?php
                                                     $userquery = "SELECT id, organization_id from users where username = '{$_SESSION['username']}';";
-                                                    $userresult = mysqli_query($conn, $userquery);
+                                                    $userresult = mysqli_prepare($conn, $userquery);
                                                     if (!$userresult) {
                                                         die("Invalid Query: ");
                                                     }

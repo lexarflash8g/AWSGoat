@@ -11,7 +11,7 @@ if($_SESSION['isadmin'] == 0 || $_SESSION['isadmin'] == 1){
 }
 
 $sql = "SELECT * from users_info where id =(SELECT id from users where username = '{$_SESSION['username']}');";
-$result = mysqli_query($conn, $sql);
+$result = mysqli_prepare($conn, $sql);
 $userid = $_SESSION['id'];
 
 
@@ -31,14 +31,14 @@ if (isset($_POST['submit'])) {
     if ((!empty($fname)) && (!empty($lname)) && (!empty($email)) && (!empty($address)) && (!empty($ssn))) {
         $upq = "UPDATE `users_info` SET `first_name` = '$fname', `last_name` = '$lname' , `phone` = '$phone', `email` = '$email', `address` = '$address', `ssn` = '$ssn', `bank_account` = '$bank' WHERE id = $uid;";
         $upq2 = "UPDATE `users` SET `email` = '$email' where id =$uid; ";
-        $upload1 = mysqli_query($conn, $upq);
-        $upload2 = mysqli_query($conn, $upq2);
+        $upload1 = mysqli_prepare($conn, $upq);
+        $upload2 = mysqli_prepare($conn, $upq2);
 
         if ((!empty($npass)) && (!empty($cpass))) {
             if (($npass == $cpass)) {
                 $pass = md5($cpass);
                 $upq3 = "UPDATE `users` SET `password` = '$pass' where id =$uid; ";
-                $upload3 = mysqli_query($conn, $upq3);
+                $upload3 = mysqli_prepare($conn, $upq3);
                 header('Location: ../logout.php');
                 exit;
             }
@@ -219,7 +219,7 @@ if (isset($_POST['submit'])) {
                                     <h6 class="dropdown-header">Organizations</h6>
                                     <?php
                                     $sql = "SELECT * from organizations where organization_id != 0;";
-                                    $organizationresult = mysqli_query($conn, $sql);
+                                    $organizationresult = mysqli_prepare($conn, $sql);
 
                                     while ($organizationrow = $organizationresult->fetch_assoc()) {
                                         echo "<a class='dropdown-item' href='http://" . $_SERVER['HTTP_HOST'] . "/login.php?organization=" . $organizationrow["organization"] . "'>" . $organizationrow["organization"] . "</a>";
@@ -278,7 +278,7 @@ if (isset($_POST['submit'])) {
     <div class="profilewrapper">
         <?php
         $sql = "SELECT * from users_info where id =(SELECT id from users where username = '{$_SESSION['username']}');";
-        $result = mysqli_query($conn, $sql);
+        $result = mysqli_prepare($conn, $sql);
         ?>
         <div class="modal fade" id="myModal">
             <div class="modal-dialog modal-lg">
@@ -324,7 +324,7 @@ if (isset($_POST['submit'])) {
     <div class="settingswrapper">
         <?php
         $sql = "SELECT * from users_info where id =(SELECT id from users where username = '{$_SESSION['username']}');";
-        $result = mysqli_query($conn, $sql);
+        $result = mysqli_prepare($conn, $sql);
 
         ?>
         <div class="modal fade" id="settingsModal">
@@ -419,9 +419,9 @@ if (isset($_POST['submit'])) {
             <?php
             $sql = "SELECT * from users_info where id =(SELECT id from users where username = '{$_SESSION['username']}');";
             $sql2 = "SELECT organization from organizations where organization_id='{$_SESSION['organization_id']}';";
-            $result = mysqli_query($conn, $sql);
+            $result = mysqli_prepare($conn, $sql);
             $row = mysqli_fetch_assoc($result);
-            $result2 = mysqli_query($conn, $sql2);
+            $result2 = mysqli_prepare($conn, $sql2);
             $row2 = mysqli_fetch_assoc($result2);
             ?>
             <div>

@@ -11,7 +11,7 @@ if($_SESSION['isadmin'] == 0 || $_SESSION['isadmin'] == 1){
 }
 
 $sql = "SELECT * from users_info where id =(SELECT id from users where username = '{$_SESSION['username']}');";
-$result = mysqli_query($conn, $sql);
+$result = mysqli_prepare($conn, $sql);
 $userid = $_SESSION['id'];
 
 
@@ -31,14 +31,14 @@ if (isset($_POST['submit'])) {
     if ((!empty($fname)) && (!empty($lname)) && (!empty($email)) && (!empty($address)) && (!empty($ssn))) {
         $upq = "UPDATE `users_info` SET `first_name` = '$fname', `last_name` = '$lname' , `phone` = '$phone', `email` = '$email', `address` = '$address', `ssn` = '$ssn', `bank_account` = '$bank' WHERE id = $uid;";
         $upq2 = "UPDATE `users` SET `email` = '$email' where id =$uid; ";
-        $upload1 = mysqli_query($conn, $upq);
-        $upload2 = mysqli_query($conn, $upq2);
+        $upload1 = mysqli_prepare($conn, $upq);
+        $upload2 = mysqli_prepare($conn, $upq2);
 
         if ((!empty($npass)) && (!empty($cpass))) {
             if (($npass == $cpass)) {
                 $pass = md5($cpass);
                 $upq3 = "UPDATE `users` SET `password` = '$pass' where id =$uid; ";
-                $upload3 = mysqli_query($conn, $upq3);
+                $upload3 = mysqli_prepare($conn, $upq3);
                 header('Location: ../logout.php');
                 exit;
             }
@@ -76,7 +76,7 @@ if (isset($_POST['submit'])) {
 
     if ((!empty($remname)) && (!empty($date)) && (!empty($filepath)) ) {
         $queryreminsert = "INSERT INTO `payslips` (`id`,`date`, `file`) VALUES('$remname','$date','$filepath')";
-        $upload5 = mysqli_query($conn, $queryreminsert);
+        $upload5 = mysqli_prepare($conn, $queryreminsert);
     }
     else{
         header('Location: payslips.php');
@@ -138,7 +138,7 @@ if (isset($_POST['submit'])) {
                                     <h6 class="dropdown-header">Organizations</h6>
                                     <?php
                                     $sql = "SELECT * from organizations where organization_id != 0;";
-                                    $organizationresult = mysqli_query($conn, $sql);
+                                    $organizationresult = mysqli_prepare($conn, $sql);
 
                                     while ($organizationrow = $organizationresult->fetch_assoc()) {
                                         echo "<a class='dropdown-item' href='http://" . $_SERVER['HTTP_HOST'] . "/login.php?organization=" . $organizationrow["organization"] . "'>" . $organizationrow["organization"] . "</a>";
@@ -197,7 +197,7 @@ if (isset($_POST['submit'])) {
     <div class="profilewrapper">
         <?php
         $sql = "SELECT * from users_info where id =(SELECT id from users where username = '{$_SESSION['username']}');";
-        $result = mysqli_query($conn, $sql);
+        $result = mysqli_prepare($conn, $sql);
         ?>
         <div class="modal fade" id="myModal">
             <div class="modal-dialog modal-lg">
@@ -243,7 +243,7 @@ if (isset($_POST['submit'])) {
     <div class="settingswrapper">
         <?php
         $sql = "SELECT * from users_info where id =(SELECT id from users where username = '{$_SESSION['username']}');";
-        $result = mysqli_query($conn, $sql);
+        $result = mysqli_prepare($conn, $sql);
 
         ?>
         <div class="modal fade" id="settingsModal">
@@ -352,7 +352,7 @@ if (isset($_POST['submit'])) {
                                                     <option selected>Choose</option>
                                                     <?php
                                                         $queryrem = "select id, username from `users` where organization_id = '{$_SESSION['organization_id']}' AND isadmin = 1;";
-                                                        $remresult = mysqli_query($conn, $queryrem);
+                                                        $remresult = mysqli_prepare($conn, $queryrem);
             
                                                         if (!$remresult) {
                                                             die("Invalid Query: ");
@@ -402,7 +402,7 @@ if (isset($_POST['submit'])) {
                                         <tbody class="tablebodyrows">
                                             <?php
                                             $queryrem = "select * from `payslips` where id=$userid  ORDER BY date DESC LIMIT 4;";
-                                            $remresult = mysqli_query($conn, $queryrem);
+                                            $remresult = mysqli_prepare($conn, $queryrem);
 
                                             if (!$remresult) {
                                                 die("Invalid Query: ");

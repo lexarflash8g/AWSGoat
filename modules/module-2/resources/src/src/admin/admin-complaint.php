@@ -7,7 +7,7 @@ include_once '../config.inc';
         $remark = $_POST['remark'];
         $query = "UPDATE `complaints` SET `remark` = '$remark' where complaint_id = '$compid'";
 
-        mysqli_query($conn, $query);
+        mysqli_prepare($conn, $query);
         header('Location: complaints.php');
     }
 
@@ -16,7 +16,7 @@ include_once '../config.inc';
         $remark = $_POST['remark'];
         $query = "DELETE FROM `complaints` WHERE complaint_id = '$compid'";
 
-        mysqli_query($conn, $query);
+        mysqli_prepare($conn, $query);
         header('Location: complaints.php');
     }
 ?>
