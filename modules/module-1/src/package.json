@@ -37,7 +37,7 @@
   },
   "dependencies": {
     "@date-io/moment": "^2.14.0",
-    "@emotion/react": "^11.9.0",
+    "@emotion/react": "^11.10.5",
     "@emotion/styled": "^11.8.1",
     "@faker-js/faker": "^6.1.2",
     "@iconify/react": "^3.2.1",
